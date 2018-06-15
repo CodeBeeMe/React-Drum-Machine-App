@@ -43,44 +43,94 @@ const Footer = () => {
 
 class DrumApp extends React.Component {
   constructor(props) {
-    super(props);
+    super(props);    
     this.state = {
-      pads: [["Q", "W", "E"], ["A", "S", "D"], ["Z", "X", "C"]]
+      pads: [
+        [
+          { id: "Q", sound: "https://goo.gl/4oLZh6" },
+          { id: "W", sound: "https://goo.gl/KQms1G" },
+          { id: "E", sound: "https://goo.gl/5tpeXQ" }
+        ],
+        [
+          { id: "A", sound: "https://goo.gl/4oLZh6" },
+          { id: "S", sound: "https://goo.gl/KQms1G" },
+          { id: "D", sound: "https://goo.gl/5tpeXQ" }
+        ],
+        [
+          { id: "Z", sound: "https://goo.gl/4oLZh6" },
+          { id: "X", sound: "https://goo.gl/KQms1G" },
+          { id: "C", sound: "https://goo.gl/5tpeXQ" }
+        ]
+      ]
     };
     
+    this.playKeys = {}    
   }
 
+  playSound(key) {
+    this.playKeys[key].currentTime = 0;
+    this.playKeys[key].load();
+		this.playKeys[key].play();
+	}
+  
   render() {
-    //Logs
-    
     const { pads } = this.state;
 
-    const row1 = pads[0].map(key => (
-      <td id={key} key={key} className="drum-pad" data-item={key} role="button">
-        {key}
-        <audio src="" id={key} className="clip" />
+    const row1 = pads[0].map(el => (
+      <td
+        id={el.id} key={el.id} className="drum-pad"
+        data-item={el.id} role="button"
+        onClick={ this.playSound.bind(this, el.id) }>       
+        <audio
+          preload="auto"
+          id={el.id} className="clip"          
+          ref={(sound) => { this.playKeys[el.id] = sound }}
+          src={el.sound} type="audio/mpeg"
+          />          
+        {el.id}
       </td>
     ));
 
-    const row2 = pads[1].map(key => (
-      <td id={key} key={key} className="drum-pad" data-item={key} role="button">
-        {key}
-        <audio src="" id={key} className="clip" />
+    const row2 = pads[1].map(el => (
+      <td
+        id={el.id} key={el.id} className="drum-pad"
+        data-item={el.id} role="button"
+        onClick={ this.playSound.bind(this, el.id) }>
+        {el.id}
+        <audio
+          preload="auto"
+          id={el.id}
+          className="clip"
+          onClick={ this.playSound }
+          ref={(sound) => { this.playKeys[el.id] = sound }}
+          src={el.sound} type="audio/mpeg"
+          >          
+        </audio>
       </td>
     ));
 
-    const row3 = pads[2].map(key => (
-      <td id={key} key={key} className="drum-pad" data-item={key} role="button">
-        {key}
-        <audio src="" id={key} className="clip" />
+    const row3 = pads[2].map(el => (
+      <td
+        id={el.id} key={el.id} className="drum-pad"
+        data-item={el.id} role="button"
+        onClick={ this.playSound.bind(this, el.id) }>
+        {el.id}
+        <audio
+          preload="auto"
+          id={el.id}
+          className="clip"
+          onClick={ this.playSound }
+          ref={(sound) => { this.playKeys[el.id] = sound }}
+          src={el.sound} type="audio/mpeg"
+          >
+        </audio>
       </td>
     ));
 
     return (
       <div>
         <Title />
-        <div id="speakers">
-        </div>
+        <div id="speakers" />
         <div id="drum-machine">
           <div className="row">
             <div className="col col-l">
@@ -96,17 +146,35 @@ class DrumApp extends React.Component {
             </div>
             <div className="col col-r">
               <div className="display-panel text-center">
-                <div id="display">
-                  <div id="sfx">
+                <div id="display-space">
+                  <div id="display" className="sfx">
                     <h6>Sound Effects</h6>
                     <h4>Placeholder</h4>
-                  </div>                  
-                  <div id="profiles">
+                  </div>
+                  <div className="profiles">
                     <h6>Sound Profiles</h6>
                     <h4>Placeholder</h4>
                   </div>
-                  <div id="vol">
+                  <div className="vol">
                     <h6>Volume</h6>
+                    <div className="row justify-content-md-center">
+                      <div className="col- down">
+                        <i className="fas fa-volume-down" />
+                      </div>
+                      <div className="col- ctrl">
+                        <input
+                          id="vol-control"
+                          type="range"
+                          min="0"
+                          max="100"
+                          defaultValue="25"
+                          step="1"
+                          />
+                      </div>
+                      <div className="col- up">
+                        <i className="fas fa-volume-up" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -117,6 +185,7 @@ class DrumApp extends React.Component {
       </div>
     );
   }
+  
 }
 
 ReactDOM.render(<DrumApp />, document.getElementById("content"));
