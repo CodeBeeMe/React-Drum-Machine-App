@@ -30,7 +30,7 @@ SOFTWARE. */
   border-radius: $radius;
 }
 
-@mixin box-shadow($inset, $x, $y, $blur, $spred, $c) { 
+@mixin box-shadow($inset, $x, $y, $blur, $spred, $c) {
   -webkit-box-shadow: inset $x $y $blur $spred $c;
   -moz-box-shadow: inset $x $y $blur $spred $c;
   -ms-box-shadow: inset $x $y $blur $spred $c;
@@ -46,7 +46,7 @@ body {
 #title {
   background: linear-gradient(to bottom, #f8f8f8, #aab7c4);
   color: #616a72;
-  width: 35%;
+  width: 388.5px;
   margin: 0 auto;
   margin-top: 150px;
   margin-bottom: 2px;
@@ -60,7 +60,7 @@ body {
 
 #footer {
   background: linear-gradient(to top, #f8f8f8, #aab7c4);
-  width: 50%;
+  width: 555px;
   margin: 0 auto;
   margin-top: 2px;
   @include radius(50px);
@@ -71,12 +71,12 @@ body {
     font-size: 12px;
     a {
       color: #458ba8;
-      transition: .2s;
+      transition: 0.2s;
     }
     a:hover {
       text-decoration: none;
       color: #005275;
-      transition: .2s;
+      transition: 0.2s;
     }
   }
 }
@@ -93,13 +93,13 @@ body {
   @include radius(150px);
   z-index: -1;
   border: 2px #aab7c4 solid;
-  @include box-shadow(inset, 0px, 0px, 45px, 5px, #aab7c4);
+  @include box-shadow(inset, 0px, 0px, 55px, 5px, #aab7c4);
 }
 
 #drum-machine {
   background-color: #aab7c4;
   margin: 0 auto;
-  width: 60%;
+  width: 642px;
   padding: 10px;
   border: 2px #616a72 solid;
   border-top-width: 10px;
@@ -128,19 +128,20 @@ body {
 
 .drum-pad {
   background: #aab7c4;
-  background: -webkit-linear-gradient(135deg, #aab7c4, #f4f9ff, #aab7c4); 
+  background: -webkit-linear-gradient(135deg, #aab7c4, #f4f9ff, #aab7c4);
   background: linear-gradient(135deg, #aab7c4, #f4f9ff, #aab7c4);
   width: 100px;
   height: 100px;
   margin: 0 auto;
   border: 2px #fff outset;
   @include radius(15px);
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .drum-pad:hover {
-  transform: scale(0.97, 0.97);
-  transition: .3s;
+  //transform: scale(0.97, 0.97);
+  opacity: 0.8;
+  transition: 0.3s;
   cursor: pointer;
 }
 
@@ -153,17 +154,22 @@ body {
   @include radius(20px);
 }
 
-#display {
-  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(158, 226, 255,1) 100%);
+#display-space {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(158, 226, 255, 1) 100%
+  );
   width: 100%;
   height: 100%;
   margin: 0 auto;
   border: 1px #aab7c4 solid;
   @include radius(15px);
   overflow: hidden;
+  @include box-shadow(inset, 0px, 0px, 25px, 1px, #316a82);
 }
 
-#sfx {  
+.sfx {
   color: #f8f8f8;
   margin-bottom: 29px;
   h6 {
@@ -176,10 +182,10 @@ body {
   }
 }
 
-#profiles {
-  color: #f8f8f8;
+.profiles {
   margin-bottom: 30px;
   h6 {
+    color: #f8f8f8;
     background-color: #458ba8;
     font-size: 14px;
   }
@@ -189,11 +195,153 @@ body {
   }
 }
 
-#vol {
-  color: #f8f8f8;  
+.vol {
   h6 {
+    color: #f8f8f8;
     background-color: #458ba8;
     font-size: 14px;
+    margin-bottom: 27px;
   }
-  
 }
+
+.down {
+  font-size: 17px;
+  color: #458ba8;
+  margin-right: -25px;
+  padding: 3px;
+}
+
+.ctrl {
+  width: 75%;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.up {
+  font-size: 17px;
+  color: #458ba8;
+  margin-left: -25px;
+  padding: 3px;
+}
+
+//-------------Hiding the defauld range slider input-----------------
+input[type="range"] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 75%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type="range"]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type="range"]::-ms-track {
+  width: 75%;
+  cursor: pointer;
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+//-------------------------------------------------------------------
+//-----------------Stylizing the range slider input------------------
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 30px;
+  width: 30px;
+  @include radius(25px);
+  background: #aab7c4;
+  background: linear-gradient(135deg, #aab7c4, #f4f9ff, #aab7c4);
+  cursor: pointer;
+  margin-top: -12px;
+  box-shadow: 1px 1px 1px #343a40, 0px 0px 1px #343a40;
+  transition: 0.3s;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  background: #f4f9ff;
+  background: linear-gradient(135deg, #aab7c4, #fff, #aab7c4);
+  transition: 0.3s;
+}
+
+/* All the same stuff for Firefox */
+input[type="range"]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #343a40, 0px 0px 1px #343a40;
+  height: 30px;
+  width: 30px;
+  @include radius(25px);
+  background: #aab7c4;
+  background: linear-gradient(135deg, #aab7c4, #f4f9ff, #aab7c4);
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type="range"]::-ms-thumb {
+  box-shadow: 1px 1px 1px #343a40, 0px 0px 1px #343a40;
+  height: 30px;
+  width: 30px;
+  @include radius(25px);
+  background: #aab7c4;
+  background: linear-gradient(135deg, #aab7c4, #f4f9ff, #aab7c4);
+  cursor: pointer;
+}
+//------------------------------Track--------------------------------
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  @include box-shadow(inset, 1px, 1px, 1px, 0px, #343a40);
+  background: #458ba8;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+  transition: 0.3s;
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: #f4f9ff;
+  transition: 0.3s;
+}
+
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  @include box-shadow(inset, 1px, 1px, 1px, 0px, #000);
+  background: #aab7c4;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type="range"]::-ms-fill-lower {
+  background: #aab7c4;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  @include box-shadow(inset, 1px, 1px, 1px, 0px, #000);
+}
+input[type="range"]:focus::-ms-fill-lower {
+  background: #3071a9;
+}
+input[type="range"]::-ms-fill-upper {
+  background: #aab7c4;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  @include box-shadow(inset, 1px, 1px, 1px, 0px, #000);
+}
+input[type="range"]:focus::-ms-fill-upper {
+  background: #f4f9ff;
+  transition: 0.3s;
+}
+//-------------------------------------------------------------------
