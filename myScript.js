@@ -41,91 +41,258 @@ const Footer = () => {
   );
 };
 
+class Keyboard extends React.Component {
+  constructor(props) {
+    super(props);
+    
+  }  
+  componentDidMount() {
+    window.focus();
+    function handleKeyPress(event) {
+      const char =
+            document.getElementById(event.key) ||
+            document.getElementById(event.key.toUpperCase());
+      const id = event.key.toUpperCase();
+      const name = document.getElementById(id);
+      const musicIcon = '...<i class="fas fa-music"></i>...';        
+      switch (event.key) {
+        case "q":
+        case "Q":
+        case "w":
+        case "W":
+        case "e":
+        case "E":
+        case "a":
+        case "A":
+        case "s":
+        case "S":
+        case "d":
+        case "D":
+        case "z":
+        case "Z":
+        case "x":
+        case "X":
+        case "c":
+        case "C":
+          $("#" + id)
+            .parent()
+            .addClass("active");
+          setTimeout(() => {
+            $("#" + id)
+            .parent()
+            .removeClass("active");
+          }, 95);
+          char.currentTime = 0;
+          char.play();
+          //console.log(id);
+          $("#name").html(musicIcon + name.dataset.item + musicIcon); 
+          break;
+        default:
+          console.log("Sorry, we are out of sounds for " + event.key + ".");
+      }
+      //console.log(event);
+    }
+    window.onkeypress = () => {
+      handleKeyPress(event);
+    };
+  }
+  render() {
+    return (null);
+  }
+}
+
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    
+  }  
+  
+  render() {
+    const { setPresetOne, setPresetTwo } = this.props;
+    return (
+      <div className="toggle">
+        <div className="row justify-content-md-center">
+          <div className="col preset-a selected" onClick={setPresetOne}>
+            <i className="fas fa-music" /> A
+          </div>
+          <div className="col">
+            <div className="switch">
+              <div className="knob">
+              </div>
+            </div>
+          </div>
+          <div className="col preset-b" onClick={setPresetTwo}>
+            <i className="fas fa-music" /> B
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
 class DrumApp extends React.Component {
   constructor(props) {
-    super(props);    
+    super(props);
+    this.presetOne = [
+      [
+        { id: "Q", sound: "https://goo.gl/tqBjNJ", name: "Bass Drum 2" },
+        { id: "W", sound: "https://goo.gl/pNdLBt", name: "Snare 2" },
+        { id: "E", sound: "https://goo.gl/9m7J8H", name: "MidTom 1" }
+      ],
+      [
+        { id: "A", sound: "https://goo.gl/PaVc3u", name: "Closed Hi Hat" },
+        { id: "S", sound: "https://goo.gl/oJ7fF8", name: "Clap" },
+        { id: "D", sound: "https://goo.gl/qYdECH", name: "Side Stick" }
+      ],
+      [
+        { id: "Z", sound: "https://goo.gl/teU8GC", name: "High Tom 2" },
+        { id: "X", sound: "https://goo.gl/kUvXAh", name: "Ryde Cym 1" },
+        { id: "C", sound: "https://goo.gl/tuW68T", name: "Long Crash 1" }
+      ],
+      [{ title: "Minimal Drums Arena" }]
+    ];
+    this.presetTwo = [
+      [
+        { id: "Q", sound: "https://goo.gl/tKGhyx", name: "Bass Drum 2" },
+        { id: "W", sound: "https://goo.gl/XFYU1R", name: "Side Stick" },
+        { id: "E", sound: "https://goo.gl/h3o5pY", name: "Snare 1" }
+      ],
+      [
+        { id: "A", sound: "https://goo.gl/tZS9QB", name: "Clap" },
+        { id: "S", sound: "https://goo.gl/YCSJnc", name: "Snare 2" },
+        { id: "D", sound: "https://goo.gl/PjemEr", name: "Low Tom 1" }
+      ],
+      [
+        { id: "Z", sound: "https://goo.gl/bcMKWx", name: "Pedal Hi Hat" },
+        { id: "X", sound: "https://goo.gl/dRijyE", name: "Mid Tom " },
+        { id: "C", sound: "https://goo.gl/wV6L4u", name: "High Tom 1" }
+      ],
+      [{ title: "Dubstep Kit Stadium" }]
+    ];
     this.state = {
-      pads: [
-        [
-          { id: "Q", sound: "https://goo.gl/4oLZh6" },
-          { id: "W", sound: "https://goo.gl/KQms1G" },
-          { id: "E", sound: "https://goo.gl/5tpeXQ" }
-        ],
-        [
-          { id: "A", sound: "https://goo.gl/4oLZh6" },
-          { id: "S", sound: "https://goo.gl/KQms1G" },
-          { id: "D", sound: "https://goo.gl/5tpeXQ" }
-        ],
-        [
-          { id: "Z", sound: "https://goo.gl/4oLZh6" },
-          { id: "X", sound: "https://goo.gl/KQms1G" },
-          { id: "C", sound: "https://goo.gl/5tpeXQ" }
-        ]
-      ]
+      pads: this.presetOne
     };
-    
-    this.playKeys = {}    
+
+    this.playKeys = {};
+    this.setPresetOne = this.setPresetOne.bind(this);
+    this.setPresetTwo = this.setPresetTwo.bind(this);
   }
 
   playSound(key) {
     this.playKeys[key].currentTime = 0;
-    this.playKeys[key].load();
-		this.playKeys[key].play();
-	}
+    //this.playKeys[key].load();
+    this.playKeys[key].play();
+    const name = document.getElementById(key);
+    const musicIcon = '...<i class="fas fa-music"></i>...';
+    $("#name").html(musicIcon + name.dataset.item + musicIcon);    
+    //console.log(key);
+    //console.log(this.playKeys[key]);
+  }
   
+  setPresetOne() {
+    this.setState({
+      pads: this.presetOne
+    });
+    if(this.state.pads !== this.presetOne) {
+      $(".knob").addClass("slide-l");
+      $(".knob").removeClass("slide-r");
+      //$(".preset-a").css("color", "#fff");
+      //$(".preset-b").css("color", "#616a72");
+      $(".preset-a").addClass("selected");
+      $(".preset-b").removeClass("selected");
+    }
+  }
+  
+  setPresetTwo() {
+    this.setState({
+      pads: this.presetTwo
+    });
+    $(".knob").addClass("slide-r");
+    $(".knob").removeClass("slide-l");
+    //$(".preset-b").css("color", "#fff");
+    //$(".preset-a").css("color", "#616a72");
+    $(".preset-b").addClass("selected");
+    $(".preset-a").removeClass("selected");
+  }
+
   render() {
+    //Logs
+    //console.log(this.state.pads);
+
     const { pads } = this.state;
 
-    const row1 = pads[0].map(el => (
+    const rowOne = pads[0].map(el => (
       <td
-        id={el.id} key={el.id} className="drum-pad"
-        data-item={el.id} role="button"
-        onClick={ this.playSound.bind(this, el.id) }>       
+        id={el.name}
+        key={el.id}
+        className="drum-pad"
+        role="button"
+        onClick={this.playSound.bind(this, el.id)}
+        >
         <audio
           preload="auto"
-          id={el.id} className="clip"          
-          ref={(sound) => { this.playKeys[el.id] = sound }}
-          src={el.sound} type="audio/mpeg"
-          />          
+          data-item={el.name}
+          id={el.id}
+          className="clip"
+          ref={sound => {
+            this.playKeys[el.id] = sound;
+          }}
+          src={el.sound}
+          type="audio/mpeg"
+          />
         {el.id}
       </td>
     ));
 
-    const row2 = pads[1].map(el => (
+    const rowTwo = pads[1].map(el => (
       <td
-        id={el.id} key={el.id} className="drum-pad"
-        data-item={el.id} role="button"
-        onClick={ this.playSound.bind(this, el.id) }>
+        id={el.name}
+        key={el.id}
+        className="drum-pad"
+        role="button"
+        onClick={this.playSound.bind(this, el.id)}
+        >
         {el.id}
         <audio
           preload="auto"
+          data-item={el.name}
           id={el.id}
           className="clip"
-          onClick={ this.playSound }
-          ref={(sound) => { this.playKeys[el.id] = sound }}
-          src={el.sound} type="audio/mpeg"
-          >          
-        </audio>
+          onClick={this.playSound}
+          ref={sound => {
+            this.playKeys[el.id] = sound;
+          }}
+          src={el.sound}
+          type="audio/mpeg"
+          />
       </td>
     ));
 
-    const row3 = pads[2].map(el => (
+    const rowThree = pads[2].map(el => (
       <td
-        id={el.id} key={el.id} className="drum-pad"
-        data-item={el.id} role="button"
-        onClick={ this.playSound.bind(this, el.id) }>
+        id={el.name}
+        key={el.id}
+        className="drum-pad"
+        role="button"
+        onClick={this.playSound.bind(this, el.id)}
+        >
         {el.id}
         <audio
           preload="auto"
+          data-item={el.name}
           id={el.id}
           className="clip"
-          onClick={ this.playSound }
-          ref={(sound) => { this.playKeys[el.id] = sound }}
-          src={el.sound} type="audio/mpeg"
-          >
-        </audio>
+          onClick={this.playSound}
+          ref={sound => {
+            this.playKeys[el.id] = sound;
+          }}
+          src={el.sound}
+          type="audio/mpeg"
+          />
       </td>
     ));
+
+    const presetTitle = pads[3][0].title;
 
     return (
       <div>
@@ -137,9 +304,9 @@ class DrumApp extends React.Component {
               <div className="pad-box">
                 <table className="pads text-center">
                   <tbody>
-                    <tr>{row1}</tr>
-                    <tr>{row2}</tr>
-                    <tr>{row3}</tr>
+                    <tr>{rowOne}</tr>
+                    <tr>{rowTwo}</tr>
+                    <tr>{rowThree}</tr>
                   </tbody>
                 </table>
               </div>
@@ -149,43 +316,31 @@ class DrumApp extends React.Component {
                 <div id="display-space">
                   <div id="display" className="sfx">
                     <h6>Sound Effects</h6>
-                    <h4>Placeholder</h4>
+                    <h5 id="name">
+                      ...<i className="fas fa-music" />...<i className="fas fa-music" />...<i className="fas fa-music" />...
+                    </h5>
                   </div>
-                  <div className="profiles">
-                    <h6>Sound Profiles</h6>
-                    <h4>Placeholder</h4>
+                  <div className="preset">
+                    <h6>Preset Title</h6>
+                    <h5>{presetTitle}</h5>
                   </div>
-                  <div className="vol">
-                    <h6>Volume</h6>
-                    <div className="row justify-content-md-center">
-                      <div className="col- down">
-                        <i className="fas fa-volume-down" />
-                      </div>
-                      <div className="col- ctrl">
-                        <input
-                          id="vol-control"
-                          type="range"
-                          min="0"
-                          max="100"
-                          defaultValue="25"
-                          step="1"
-                          />
-                      </div>
-                      <div className="col- up">
-                        <i className="fas fa-volume-up" />
-                      </div>
-                    </div>
+                  <div className="library">
+                    <h6>Preset Library</h6>
+                    <Toggle
+                      setPresetOne={this.setPresetOne}
+                      setPresetTwo={this.setPresetTwo}
+                      />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Keyboard />
         <Footer />
       </div>
     );
   }
-  
 }
 
 ReactDOM.render(<DrumApp />, document.getElementById("content"));
